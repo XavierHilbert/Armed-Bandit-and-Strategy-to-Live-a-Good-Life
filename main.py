@@ -4,10 +4,10 @@ from functools import partial
 
 # Defining a Bandit
 class Bandit:
-    def __init__(self, true_mean, cost, stander_deviation):
+    def __init__(self, true_mean, cost, standard_deviation):
         self.true_mean = true_mean
         self.cost = cost
-        self.stander_deviation = stander_deviation
+        self.standard_deviation = standard_deviation
         self.true_efficiency = self.true_mean / self.cost
         self.calculated_mean = 0
         self.number_of_hits = 1e-6
@@ -17,7 +17,7 @@ class Bandit:
         return self.calculated_mean / self.cost
 
     def hit(self):
-        return self.true_mean + np.random.randn()*self.stander_deviation
+        return self.true_mean + np.random.randn()*self.standard_deviation
 
     def update(self, x):
         self.number_of_hits += 1
@@ -85,11 +85,11 @@ def run(bandits, N, number_of_trials, title = None):
     plt.show()
 
 
-def createBandits(number_of_bandits, means, costs, stander_deviations):
+def createBandits(number_of_bandits, means, costs, standard_deviations):
     # create a list of bandits
     bandits = []
     for _ in range(number_of_bandits):
-        bandits.append([np.random.choice(means), np.random.choice(costs), np.random.choice(stander_deviations)])
+        bandits.append([np.random.choice(means), np.random.choice(costs), np.random.choice(standard_deviations)])
     return bandits
 
 
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     
     """Constructing bandits at random. Where reward = N(mean, standard deviation) with a random cost associated with each bandit.
     Constructed by picking a random number from first array as mean, second array as cost, and third array as standard deviation"""
-    NUMBER_OF_BANDITS = 5
+    NUMBER_OF_BANDITS = 100
     BANDITS = createBandits(NUMBER_OF_BANDITS, [1,2,3,4,5,6,6,7,8,9,11,12,13,14,15,16, 20], [1,2,3,4,5,6,7,8,9], [1,2,3,4,5,6,7,8,9,10,11,12])
 
 
@@ -117,10 +117,10 @@ if __name__ == '__main__':
     run(BANDITS, NUMBER_OF_PULLS, 1)
    
     """Getting average behavior over many trials. May take a while."""
-    NUMBER_OF_TRIALS = 1000
+    NUMBER_OF_TRIALS = 10
 
     # Assumes relatively small Budget.
-    NUMBER_OF_PULLS = 100
+    NUMBER_OF_PULLS = 20
     run(BANDITS, NUMBER_OF_PULLS, NUMBER_OF_TRIALS, f"{NUMBER_OF_PULLS} pulls with {len(BANDITS)} Bandits Averaged Amongst {NUMBER_OF_TRIALS} trials")
 
     # Assumes relatively large Budget.
